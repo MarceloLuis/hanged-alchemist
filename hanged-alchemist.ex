@@ -22,8 +22,8 @@ defmodule Game do
             - Ocult: Char that represents the atual letter of the ocult list
         - Value: Char that representes the word gived by the user
     """
-    defp att_ocult({value, _}, value), do: value
-    defp att_ocult({_, ocult}, _), do: ocult
+    def att_ocult({value, _}, value), do: value
+    def att_ocult({_, ocult}, _), do: ocult
     
     @doc """
     Transform the list of word and ocult in a unic list of tuples {x, y} when x is a latter of the original word and y is the same index in ocult.
@@ -68,8 +68,9 @@ defmodule Game do
           -a-c-lo
           Typer a letter: 
     """
-    def draw(ocult) do 
-        IO.puts ocult
+    def draw(ocult, attempts) do 
+        IO.puts "\nWord: #{ocult}"
+        IO.puts "#{attempts} attempts left."
         String.trim(IO.gets "Type a letter: ")
     end
     
@@ -78,19 +79,24 @@ defmodule Game do
     ## Parametres
         - Word: A random word taken from the list of words
         - Ocult: The same word, but ocult "--------"
+        - attempts; Int, the numbers of attempts that lefts
     ## Exemple
-          iex> Game.loop("Marcelo", "-----")
+          iex> Game.loop("Marcelo", "-----", 2)
           # Game start
 
-          iex> Game.loop("Marcelo", :ok)
+          iex> Game.loop("Marcelo", :ok, 1)
           You Win
+
+          iex> Game.loop("Marcelo", "mar-celo", -1)
+          You lose, all your attempts are end
     """
-    def loop(_, :ok), do: IO.puts "You Win"
-    def loop(word, ocult) do
-        letter = draw(ocult)
+    def loop(word, :ok, _), do: IO.puts "\nCongratulations, you freed the Alchemist. \nThe word is #{word}."
+    def loop(_, _, -1), do: IO.puts "\nYou lose, all your attempts are end. \nThe Alchemist remains stuck."
+    def loop(word, ocult, attempts) do
+        letter = draw(ocult, attempts)
         new_ocult = check_letter(word, letter, ocult)
         win = win?(word, Enum.join(new_ocult)) 
-        loop(word, win)
+        loop(word, win, attempts - 1)
     end 
 end
 
@@ -101,4 +107,4 @@ words = ["javascrtip", "python", "clojure", "haskell", "java", "ruby",
 word = Enum.at(words, :rand.uniform(Kernel.length(words)))
 ocult = Game.turn_ocult(String.codepoints(word))
 # Start the game
-Game.loop(word, ocult)
+Game.loop(word, ocult, 15)
