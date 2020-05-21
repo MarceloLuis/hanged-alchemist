@@ -81,7 +81,7 @@ defmodule Game do
         - Ocult: The same word, but ocult "--------"
         - attempts; Int, the numbers of attempts that lefts
     ## Exemple
-          iex> Game.loop("Marcelo", "-----", 2)
+          iex> Game.loop("Marcelo", "--------", 2)
           # Game start
 
           iex> Game.loop("Marcelo", :ok, 1)
