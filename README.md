@@ -13,4 +13,4 @@ elixir hanged-alchemist.ex
 ```
 
 ### License
-React is [MIT licensed](./LICENSE).
+Hanged Alchemist is [MIT licensed](./LICENSE).
